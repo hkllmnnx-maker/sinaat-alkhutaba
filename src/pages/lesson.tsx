@@ -56,6 +56,25 @@ export const LessonPage: FC<{ lesson: Lesson; module: Module }> = ({
             <h1>{l.title}</h1>
             <p class="lesson-summary">{l.summary}</p>
 
+            {/* ===== التشجير المصوّر (الخريطة الذهنية) ===== */}
+            {l.diagram && (
+              <figure class="lesson-diagram">
+                <figcaption>
+                  <i class="fa-solid fa-sitemap"></i> التشجير المصوّر للدرس
+                </figcaption>
+                <a href={l.diagram} target="_blank" rel="noopener" title="اضغط لعرض الصورة بحجمها الكامل">
+                  <img
+                    src={l.diagram}
+                    alt={`تشجير مصوّر لدرس: ${l.title}`}
+                    loading="lazy"
+                  />
+                </a>
+                <p class="diagram-hint">
+                  <i class="fa-solid fa-magnifying-glass-plus"></i> اضغط على الصورة لعرضها بحجمٍ أكبر
+                </p>
+              </figure>
+            )}
+
             {l.sections.map((s) => (
               <div class="lesson-section">
                 <h2>{s.heading}</h2>
