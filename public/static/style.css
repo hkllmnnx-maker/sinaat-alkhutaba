@@ -656,6 +656,89 @@ img { max-width: 100%; display: block; }
   margin-top: 36px; padding-top: 26px; border-top: 1px solid var(--line);
 }
 
+/* ===== زر الانتقال المقفل ===== */
+.btn.is-locked {
+  background: #e7eaef !important;
+  color: #8a93a3 !important;
+  box-shadow: none !important;
+  cursor: not-allowed;
+  opacity: 0.95;
+}
+.btn.is-locked:hover { transform: none; }
+.btn.is-unlocked { animation: btnPop 0.4s ease; }
+@keyframes btnPop {
+  0% { transform: scale(0.96); }
+  60% { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+
+/* ===================== نظام التدرّج (Gate) ===================== */
+.lesson-gate {
+  background: linear-gradient(135deg, #fff8ec, #f3f8ff);
+  border: 1px solid var(--gold-200, #ead9bf);
+  border-right: 5px solid var(--gold-500);
+  border-radius: 16px;
+  padding: 20px 22px;
+  margin: 18px 0 26px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s;
+}
+.lesson-gate.gate-unlocked {
+  background: linear-gradient(135deg, #f1fbf6, #f3f8ff);
+  border-right-color: #1f9d6b;
+}
+.gate-head {
+  display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px;
+}
+.gate-icon {
+  flex: 0 0 auto;
+  width: 44px; height: 44px; border-radius: 12px;
+  display: grid; place-items: center;
+  background: var(--blue-800); color: #fff; font-size: 1.1rem;
+}
+.gate-icon.open { background: #1f9d6b; }
+.gate-title { display: block; color: var(--blue-900); font-size: 1.12rem; margin-bottom: 4px; }
+.gate-sub { display: block; color: var(--muted); font-size: 0.92rem; line-height: 1.7; }
+.gate-actions {
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 12px;
+}
+.gate-timer {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #fff; border: 1px solid var(--line); border-radius: 10px;
+  padding: 9px 16px; color: var(--blue-900); font-weight: 700;
+}
+.gate-timer i { color: var(--gold-600); }
+.gate-timer strong { font-variant-numeric: tabular-nums; letter-spacing: 1px; font-size: 1.05rem; }
+.gate-conditions {
+  list-style: none; margin: 6px 0 0; padding: 0;
+  display: flex; flex-wrap: wrap; gap: 10px 22px;
+}
+.gate-conditions .cond {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: var(--muted); font-size: 0.92rem; font-weight: 600;
+}
+.gate-conditions .cond i { color: #c0c7d2; font-size: 1.05rem; }
+.gate-conditions .cond.met { color: #1f9d6b; }
+.gate-conditions .cond.met i { color: #1f9d6b; }
+
+/* ===== الدروس المقفلة في القوائم ===== */
+.locked-lesson {
+  opacity: 0.62;
+  filter: grayscale(0.35);
+  cursor: not-allowed;
+  position: relative;
+}
+.locked-lesson:hover { transform: none !important; border-color: var(--line) !important; box-shadow: var(--shadow-sm) !important; }
+.lock-badge {
+  color: #9aa3b2; font-size: 1.1rem; margin-right: 6px;
+}
+.side-lessons a.locked-lesson { pointer-events: auto; }
+
+@media (max-width: 640px) {
+  .gate-actions { flex-direction: column; align-items: stretch; }
+  .gate-timer { justify-content: center; }
+}
+
 /* Progress bar (lesson reading) */
 .read-progress {
   position: fixed; top: 0; right: 0; height: 4px; width: 0%;

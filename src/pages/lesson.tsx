@@ -56,6 +56,50 @@ export const LessonPage: FC<{ lesson: Lesson; module: Module }> = ({
             <h1>{l.title}</h1>
             <p class="lesson-summary">{l.summary}</p>
 
+            {/* ===== لوحة نظام التدرّج (بدء الدرس + المؤقّت + شروط الفتح) ===== */}
+            <div
+              class="lesson-gate"
+              id="lessonGate"
+              data-quiz-total={l.quiz.length}
+              data-min-minutes="5"
+            >
+              <div class="gate-head">
+                <i class="fa-solid fa-lock gate-icon" id="gateIcon"></i>
+                <div>
+                  <strong class="gate-title" id="gateTitle">ابدأ الدرس لفتح المحتوى</strong>
+                  <span class="gate-sub" id="gateSub">
+                    اضغط «بدء الدرس» ثمّ امكث خمس دقائق على الأقل، وأجب عن جميع أسئلة الاختبار بشكلٍ صحيح
+                    لتتمكّن من الانتقال إلى الدرس التالي.
+                  </span>
+                </div>
+              </div>
+
+              <div class="gate-actions">
+                <button id="startLessonBtn" class="btn btn-blue">
+                  <i class="fa-solid fa-play"></i> بدء الدرس
+                </button>
+                <div class="gate-timer" id="gateTimer" style="display:none;">
+                  <i class="fa-regular fa-clock"></i>
+                  <span>الوقت المتبقّي لفتح الانتقال: </span>
+                  <strong id="gateCountdown">٠٥:٠٠</strong>
+                </div>
+              </div>
+
+              {/* مؤشّرات الشروط */}
+              <ul class="gate-conditions">
+                <li id="condTime" class="cond">
+                  <i class="fa-regular fa-circle"></i>
+                  <span>مضيُّ خمس دقائق على بدء الدرس</span>
+                </li>
+                <li id="condQuiz" class="cond">
+                  <i class="fa-regular fa-circle"></i>
+                  <span>
+                    الإجابة الصحيحة عن جميع أسئلة الاختبار ({l.quiz.length} أسئلة)
+                  </span>
+                </li>
+              </ul>
+            </div>
+
             {/* ===== معرض المشجّرات المصوّرة (الخرائط الذهنية) ===== */}
             {l.diagrams && l.diagrams.length > 0 && (
               <section class="lesson-diagrams" aria-label="المشجّرات المصوّرة للدرس">
@@ -171,13 +215,6 @@ export const LessonPage: FC<{ lesson: Lesson; module: Module }> = ({
               </div>
             )}
 
-            {/* زر الإتمام */}
-            <div style="text-align:center;margin-top:28px;">
-              <button id="markDoneBtn" class="btn btn-blue">
-                <i class="fa-solid fa-check"></i> أنهيت هذا الدرس
-              </button>
-            </div>
-
             {/* ===== التنقل بين الدروس ===== */}
             <div class="lesson-nav">
               {prev ? (
@@ -188,13 +225,26 @@ export const LessonPage: FC<{ lesson: Lesson; module: Module }> = ({
                 <span></span>
               )}
               {next ? (
-                <a href={`/lesson/${next.lesson.id}`} class="btn btn-blue">
-                  الدرس التالي <i class="fa-solid fa-arrow-left"></i>
-                </a>
+                <button
+                  id="nextLessonBtn"
+                  class="btn btn-blue is-locked"
+                  data-next-href={`/lesson/${next.lesson.id}`}
+                  disabled
+                >
+                  <i class="fa-solid fa-lock"></i>{' '}
+                  <span class="next-label">الدرس التالي مقفل</span>
+                </button>
               ) : (
-                <a href="/course" class="btn btn-gold">
-                  أنهيت الدورة! <i class="fa-solid fa-flag-checkered"></i>
-                </a>
+                <button
+                  id="nextLessonBtn"
+                  class="btn btn-gold is-locked"
+                  data-next-href="/course"
+                  data-finish="1"
+                  disabled
+                >
+                  <i class="fa-solid fa-lock"></i>{' '}
+                  <span class="next-label">إنهاء الدورة مقفل</span>
+                </button>
               )}
             </div>
           </article>

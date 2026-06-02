@@ -1,4 +1,10 @@
 import { jsxRenderer } from 'hono/jsx-renderer'
+import { modules } from './data/course'
+
+// قائمة مسطّحة بترتيب جميع الدروس (لمنطق التدرّج في الدراسة)
+const lessonOrder: string[] = []
+modules.forEach((m) => m.lessons.forEach((l) => lessonOrder.push(l.id)))
+const lessonOrderJson = JSON.stringify(lessonOrder)
 
 export const renderer = jsxRenderer(({ children, title, lessonId }) => {
   const pageTitle = title ? `${title} | صناعة الخطباء` : 'صناعة الخطباء — دورة فن الخطابة والإلقاء'
@@ -28,7 +34,7 @@ export const renderer = jsxRenderer(({ children, title, lessonId }) => {
         />
         <link href="/static/style.css" rel="stylesheet" />
       </head>
-      <body data-lesson-id={lessonId || undefined}>
+      <body data-lesson-id={lessonId || undefined} data-lesson-order={lessonOrderJson}>
         <div class="read-progress" id="readProgress"></div>
 
         {/* ===== Navbar ===== */}
