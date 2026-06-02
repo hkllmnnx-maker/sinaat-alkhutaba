@@ -63,24 +63,46 @@ curl http://localhost:3000
 
 ## الروابط
 - **الموقع المنشور (الإنتاج — Cloudflare)**: https://sinaat-alkhutaba.pages.dev
-- **آخر نشر (Cloudflare)**: https://1e0e976a.sinaat-alkhutaba.pages.dev
-- **🌍 الرابط البديل (GitHub Pages — يعمل في اليمن والدول المحجوبة)**: https://hkllmnnx-maker.github.io/sinaat-alkhutaba/
+- **🟢 الرابط البديل الموصى به (بروكسي Cloudflare Worker — يتجاوز الحجب)**: **https://khutaba-proxy.khutaba-portal.workers.dev**
+- **الرابط البديل (GitHub Pages)**: https://hkllmnnx-maker.github.io/sinaat-alkhutaba/
 - **مستودع GitHub**: https://github.com/hkllmnnx-maker/sinaat-alkhutaba
 
 ## حلّ مشكلة الحجب في بعض الدول (اليمن وغيرها)
-نطاق Cloudflare Pages (`*.pages.dev`) قد يكون محجوبًا على مستوى مزوّدي الإنترنت في بعض الدول مثل اليمن — وهذا حجب خارجي لا يمكن التحكّم به من داخل الكود. **الحلّ الدائم**: نسخة ثابتة مطابقة للموقع منشورة على **GitHub Pages** (نطاق `github.io` غير محجوب عادةً):
+نطاقات `*.pages.dev` و`github.io` قد تكون محجوبة على مستوى مزوّدي الإنترنت في بعض الدول مثل اليمن — وهذا حجب خارجي لا يمكن التحكّم به من داخل الكود (يُنفَّذ غالبًا بفحص اسم النطاق في طبقة SNI/DNS). الحلّ يعتمد على إتاحة **روابط بديلة على نطاقات مختلفة**:
 
+### ١) بروكسي Cloudflare Worker (الموصى به) ⭐
+👉 **https://khutaba-proxy.khutaba-portal.workers.dev**
+
+- نطاق `workers.dev` مختلف عن `pages.dev`، وقد لا يكون مدرجًا في قوائم الحجب.
+- يعمل كبروكسي عكسي: المتصفّح يتصل بنطاق الـ Worker، والـ Worker (داخل شبكة Cloudflare) يجلب الصفحة من الموقع الأصلي ويعيدها — الاتصال بالأصل من خادم لخادم لا يمرّ عبر مزوّد الإنترنت لدى الزائر فلا يُحجب.
+- يجلب المحتوى الحيّ تلقائيًا، فلا يحتاج إعادة نشر عند تحديث الموقع.
+- الكود في مجلّد `proxy-worker/`. للتحديث: `cd proxy-worker && npx wrangler deploy`.
+
+### ٢) نسخة GitHub Pages الثابتة
 👉 **https://hkllmnnx-maker.github.io/sinaat-alkhutaba/**
 
-- النسخة الثابتة تُولَّد عبر `npm run build:static` (سكربت `scripts/build-static.cjs`) إلى مجلّد `docs/`، ثم تُنشَر تلقائيًا عبر GitHub Pages من فرع `main` ومسار `/docs`.
-- يدعم `app.js` المسار الفرعي `/sinaat-alkhutaba/` تلقائيًا (كشف `BASE_PATH` من مسار سكربت `app.js`)، فتعمل كل الروابط والتنقّل والقفل دون مشاكل.
-- لتحديث النسخة البديلة بعد أي تعديل: شغّل الخادم محليًا ثم `npm run build:static` ثم ارفع `docs/` إلى GitHub.
+- نسخة ثابتة تُولَّد عبر `npm run build:static` إلى مجلّد `docs/`، تُنشَر من فرع `main` مسار `/docs`.
+- يدعم `app.js` المسار الفرعي تلقائيًا (`BASE_PATH`).
+
+### ٣) الحلّ الدائم النهائي: دومين مخصص
+لضمان عدم الحجب نهائيًا، يُنصح بشراء **دومين مخصص فريد** (مثل `.com`) وربطه بمشروع Cloudflare Pages — النطاقات الفريدة غير المعروفة لا تكون في قوائم الحجب. (راجع قسم «ربط دومين مخصص» في الأسفل عند توفّر دومين.)
 
 ## حالة النشر
 - **المنصّة الأساسية**: Cloudflare Pages — https://sinaat-alkhutaba.pages.dev
-- **المنصّة البديلة (لتجاوز الحجب)**: GitHub Pages — https://hkllmnnx-maker.github.io/sinaat-alkhutaba/
-- **الحالة**: ✅ منشور ويعمل على المنصّتين (Active).
+- **بروكسي بديل (Worker)**: https://khutaba-proxy.khutaba-portal.workers.dev
+- **بديل ثابت (GitHub Pages)**: https://hkllmnnx-maker.github.io/sinaat-alkhutaba/
+- **الحالة**: ✅ منشور ويعمل على كل الروابط (Active).
 - **آخر تحديث**: 2026-06-02.
+
+## ربط دومين مخصص (عند توفّره)
+عند شراء دومين (مثلًا `example.com`) أضِفه إلى Cloudflare ثم اربطه بالمشروع:
+```bash
+# عبر لوحة Cloudflare: Pages → sinaat-alkhutaba → Custom domains → Set up a domain
+# أو عبر API (بعد إضافة الدومين كـ zone في الحساب):
+export CLOUDFLARE_API_TOKEN="<token>"
+npx wrangler pages deployment list --project-name sinaat-alkhutaba
+# ثم أضف الدومين من لوحة التحكم وسيُصدر Cloudflare شهادة SSL تلقائيًا.
+```
 
 ## آخر الإصلاحات
 - **إصلاح اختفاء نافذة المشرف**: كانت النقرة المفردة على شعار الموقع (رابط `<a href="/">`) تُحدِث انتقالًا/إعادة تحميل للصفحة فتختفي النافذة عند اكتمال التحميل. الحلّ: منع السلوك الافتراضي للرابط دائمًا (`preventDefault`) واستخدام مؤقّت 280ملّي ثانية للتمييز بين النقرة المفردة (انتقال) والمزدوجة (فتح النافذة دون انتقال) — فأصبحت النافذة **تبقى ولا تختفي**.
