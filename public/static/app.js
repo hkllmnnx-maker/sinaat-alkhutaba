@@ -30,8 +30,60 @@
   try { lessonOrder = JSON.parse(document.body.dataset.lessonOrder || '[]'); }
   catch (e) { lessonOrder = []; }
 
-  // هل الدرس مفتوح للدراسة؟ (الأول دائمًا، أو السابق مكتمل)
+  // ============================================================
+  //  وضع المشرف (Admin) — جلسة مؤقّتة تفتح كل الأقفال
+  // ============================================================
+  // - يُحفظ في sessionStorage: ينتهي تلقائيًا عند إغلاق الموقع/التبويب.
+  // - يحوي طابعًا زمنيًا لآخر نشاط: ينتهي بعد مدّة خمول طويلة.
+  // - التقدّم (الدروس المكتملة) يبقى محفوظًا في localStorage ولا يُفقد.
+  var ADMIN_KEY = 'sk_admin_session_v1';
+  var ADMIN_USER = 'Adman5';
+  var ADMIN_PASS = '12734';
+  var ADMIN_IDLE_MS = 30 * 60 * 1000; // 30 دقيقة خمول → تُلغى صلاحية المشرف
+
+  function getAdminSession() {
+    try { return JSON.parse(sessionStorage.getItem(ADMIN_KEY) || 'null'); }
+    catch (e) { return null; }
+  }
+  function setAdminSession(obj) {
+    try {
+      if (obj) sessionStorage.setItem(ADMIN_KEY, JSON.stringify(obj));
+      else sessionStorage.removeItem(ADMIN_KEY);
+    } catch (e) {}
+  }
+  function isAdmin() {
+    var s = getAdminSession();
+    if (!s || !s.active) return false;
+    // التحقق من الخمول الطويل
+    if (Date.now() - (s.last || 0) > ADMIN_IDLE_MS) {
+      setAdminSession(null);
+      return false;
+    }
+    // تحديث آخر نشاط
+    s.last = Date.now();
+    setAdminSession(s);
+    return true;
+  }
+  function enableAdmin() {
+    setAdminSession({ active: true, last: Date.now() });
+    paintAdminBadge();
+    paintCompletion();
+    if (typeof refreshGate === 'function' && document.getElementById('lessonGate')) refreshGate();
+    showToast('تم تفعيل وضع المشرف — فُتحت جميع الدروس 🔓');
+  }
+  function disableAdmin() {
+    setAdminSession(null);
+    paintAdminBadge();
+    paintCompletion();
+    if (typeof refreshGate === 'function' && document.getElementById('lessonGate')) refreshGate();
+    showToast('تم إنهاء وضع المشرف — عادت القيود الطبيعية 🔒');
+    // إعادة فرض القيود إن كان في درس مقفل الآن
+    enforceLessonAccess();
+  }
+
+  // هل الدرس مفتوح للدراسة؟ (المشرف يفتح كل شيء، وإلا: الأول دائمًا أو السابق مكتمل)
   function isLessonUnlocked(id) {
+    if (isAdmin()) return true;         // المشرف: لا قيود
     var p = getProgress();
     var i = lessonOrder.indexOf(id);
     if (i <= 0) return true;            // أول درس أو غير معروف
@@ -49,6 +101,80 @@
     toggle.addEventListener('click', function () {
       links.classList.toggle('open');
     });
+  }
+
+  // ============================================================
+  //  الزرّ المخفي على الشعار + نافذة دخول المشرف
+  // ============================================================
+  var adminModal = document.getElementById('adminModal');
+  var adminBadge = document.getElementById('adminBadge');
+  var brandLink = document.getElementById('brandLink');
+
+  function openAdminModal() {
+    if (!adminModal) return;
+    adminModal.style.display = 'flex';
+    var err = document.getElementById('adminError');
+    if (err) err.style.display = 'none';
+    var u = document.getElementById('adminUser');
+    if (u) { u.value = ''; setTimeout(function () { u.focus(); }, 50); }
+    var pw = document.getElementById('adminPass');
+    if (pw) pw.value = '';
+  }
+  function closeAdminModal() {
+    if (adminModal) adminModal.style.display = 'none';
+  }
+
+  // الزرّ المخفي: نقرة مزدوجة على الشعار تفتح نافذة المشرف (والنقرة المفردة تذهب للرئيسية)
+  if (brandLink) {
+    brandLink.addEventListener('dblclick', function (e) {
+      e.preventDefault();
+      openAdminModal();
+    });
+    // على اللمس (الجوال): ضغطة مطوّلة ~700ms تفتح النافذة
+    var pressTimer = null;
+    brandLink.addEventListener('touchstart', function () {
+      pressTimer = setTimeout(function () { openAdminModal(); }, 700);
+    }, { passive: true });
+    var clearPress = function () { if (pressTimer) { clearTimeout(pressTimer); pressTimer = null; } };
+    brandLink.addEventListener('touchend', clearPress);
+    brandLink.addEventListener('touchmove', clearPress);
+  }
+
+  // إغلاق النافذة
+  var adminClose = document.getElementById('adminModalClose');
+  var adminOverlay = document.getElementById('adminModalOverlay');
+  if (adminClose) adminClose.addEventListener('click', closeAdminModal);
+  if (adminOverlay) adminOverlay.addEventListener('click', closeAdminModal);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && adminModal && adminModal.style.display === 'flex') closeAdminModal();
+  });
+
+  // معالجة نموذج الدخول
+  var adminForm = document.getElementById('adminForm');
+  if (adminForm) {
+    adminForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var u = (document.getElementById('adminUser') || {}).value || '';
+      var pw = (document.getElementById('adminPass') || {}).value || '';
+      var err = document.getElementById('adminError');
+      if (u.trim() === ADMIN_USER && pw === ADMIN_PASS) {
+        if (err) err.style.display = 'none';
+        closeAdminModal();
+        enableAdmin();
+      } else {
+        if (err) err.style.display = 'flex';
+      }
+    });
+  }
+
+  // زر الخروج من وضع المشرف
+  var adminLogoutBtn = document.getElementById('adminLogoutBtn');
+  if (adminLogoutBtn) adminLogoutBtn.addEventListener('click', disableAdmin);
+
+  // رسم شارة المشرف حسب الحالة
+  function paintAdminBadge() {
+    if (!adminBadge) return;
+    adminBadge.style.display = isAdmin() ? 'flex' : 'none';
   }
 
   // ---------- شريط تقدّم القراءة ----------
@@ -132,6 +258,25 @@
 
   function refreshGate() {
     if (!gate) return;
+
+    // وضع المشرف: تجاوز كامل لكل القيود وفتح الانتقال فورًا
+    if (isAdmin()) {
+      var giA = document.getElementById('gateIcon');
+      var gtA = document.getElementById('gateTitle');
+      var gsA = document.getElementById('gateSub');
+      var gTimerA = document.getElementById('gateTimer');
+      if (giA) giA.className = 'fa-solid fa-lock-open gate-icon open';
+      gate.classList.add('gate-unlocked');
+      if (gtA) gtA.textContent = 'وضع المشرف: المحتوى مفتوح بالكامل';
+      if (gsA) gsA.textContent = 'جميع القيود مرفوعة — يمكنك التنقّل بين الدروس بحرّية.';
+      if (gTimerA) gTimerA.style.display = 'none';
+      if (startBtn) startBtn.style.display = 'none';
+      setCond(document.getElementById('condTime'), true);
+      setCond(document.getElementById('condQuiz'), true);
+      unlockNext();
+      return;
+    }
+
     var started = !!getStartTime();
     var timeMet = timeConditionMet();
     var quizMet = quizAllCorrect();
@@ -364,6 +509,9 @@
       } else {
         el.classList.remove('locked-lesson');
         el.removeAttribute('aria-disabled');
+        // إزالة شارة القفل إن وُجدت (مثلًا بعد تفعيل وضع المشرف)
+        var existingLock = el.querySelector('.lock-badge');
+        if (existingLock) existingLock.remove();
       }
     });
 
@@ -402,6 +550,7 @@
   }
 
   // ---------- التهيئة ----------
+  paintAdminBadge();
   paintCompletion();
   enforceLessonAccess();
   if (gate) {

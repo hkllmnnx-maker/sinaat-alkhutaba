@@ -656,6 +656,85 @@ img { max-width: 100%; display: block; }
   margin-top: 36px; padding-top: 26px; border-top: 1px solid var(--line);
 }
 
+/* ===================== نافذة دخول المشرف ===================== */
+.admin-modal {
+  position: fixed; inset: 0; z-index: 300;
+  display: none; align-items: center; justify-content: center;
+  padding: 20px;
+}
+.admin-modal-overlay {
+  position: absolute; inset: 0;
+  background: rgba(10, 30, 60, 0.55);
+  backdrop-filter: blur(3px);
+}
+.admin-modal-box {
+  position: relative; z-index: 2;
+  background: #fff; width: 100%; max-width: 380px;
+  border-radius: 18px; padding: 30px 26px 26px;
+  box-shadow: 0 24px 60px rgba(10, 40, 80, 0.4);
+  text-align: center;
+  animation: adminPop 0.25s ease;
+}
+@keyframes adminPop {
+  from { transform: translateY(14px) scale(0.96); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+.admin-modal-close {
+  position: absolute; top: 12px; left: 12px;
+  width: 34px; height: 34px; border-radius: 9px; border: none;
+  background: var(--blue-50); color: var(--blue-800); cursor: pointer;
+  font-size: 1rem; transition: all 0.2s;
+}
+.admin-modal-close:hover { background: var(--blue-100); }
+.admin-modal-icon {
+  width: 64px; height: 64px; border-radius: 50%;
+  margin: 0 auto 14px;
+  display: grid; place-items: center;
+  background: linear-gradient(135deg, var(--blue-800), var(--blue-600));
+  color: #fff; font-size: 1.6rem;
+}
+.admin-modal-box h3 { margin: 0 0 6px; color: var(--blue-900); font-size: 1.3rem; }
+.admin-modal-sub { margin: 0 0 18px; color: var(--muted); font-size: 0.9rem; line-height: 1.6; }
+.admin-field { display: block; text-align: right; margin-bottom: 14px; }
+.admin-field span {
+  display: block; margin-bottom: 6px; font-weight: 700;
+  color: var(--blue-900); font-size: 0.92rem;
+}
+.admin-field input {
+  width: 100%; padding: 12px 14px; border-radius: 11px;
+  border: 1.5px solid var(--line); font-family: inherit; font-size: 1rem;
+  transition: border-color 0.2s; box-sizing: border-box;
+}
+.admin-field input:focus { outline: none; border-color: var(--blue-600); }
+.admin-error {
+  display: flex; align-items: center; gap: 8px; justify-content: center;
+  color: #c0392b; background: #fdecea; border: 1px solid #f5c6cb;
+  padding: 10px 12px; border-radius: 10px; font-size: 0.9rem;
+  font-weight: 600; margin-bottom: 12px;
+}
+
+/* ===== شارة وضع المشرف ===== */
+.admin-badge {
+  position: fixed; bottom: 18px; right: 18px; z-index: 150;
+  display: none; align-items: center; gap: 12px;
+  background: linear-gradient(135deg, #1f9d6b, #178a5c);
+  color: #fff; padding: 11px 16px; border-radius: 999px;
+  box-shadow: 0 12px 28px rgba(20, 120, 80, 0.4);
+  font-weight: 700; font-size: 0.9rem;
+}
+.admin-badge > i { font-size: 1.05rem; }
+.admin-logout {
+  background: rgba(255, 255, 255, 0.22); border: none; color: #fff;
+  padding: 6px 12px; border-radius: 999px; cursor: pointer;
+  font-family: inherit; font-weight: 700; font-size: 0.82rem;
+  display: inline-flex; align-items: center; gap: 5px; transition: background 0.2s;
+}
+.admin-logout:hover { background: rgba(255, 255, 255, 0.38); }
+.brand { cursor: pointer; }
+@media (max-width: 640px) {
+  .admin-badge { right: 12px; left: 12px; bottom: 12px; justify-content: center; }
+}
+
 /* ===== زر الانتقال المقفل ===== */
 .btn.is-locked {
   background: #e7eaef !important;

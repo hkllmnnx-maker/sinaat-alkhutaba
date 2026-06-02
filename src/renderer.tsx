@@ -40,8 +40,8 @@ export const renderer = jsxRenderer(({ children, title, lessonId }) => {
         {/* ===== Navbar ===== */}
         <header class="navbar">
           <div class="container navbar-inner">
-            <a href="/" class="brand" aria-label="الصفحة الرئيسية">
-              <img src="/static/logo.png" alt="شعار صناعة الخطباء" />
+            <a href="/" class="brand" id="brandLink" aria-label="الصفحة الرئيسية">
+              <img src="/static/logo.png" alt="شعار صناعة الخطباء" id="brandLogo" />
               <span>
                 <span class="brand-title">صِناعةُ الخُطَباء</span>
                 <br />
@@ -104,6 +104,49 @@ export const renderer = jsxRenderer(({ children, title, lessonId }) => {
             </div>
           </div>
         </footer>
+
+        {/* ===== شارة وضع المشرف (تظهر عند التفعيل) ===== */}
+        <div class="admin-badge" id="adminBadge" style="display:none;">
+          <i class="fa-solid fa-unlock-keyhole"></i>
+          <span>وضع المشرف مُفعّل — كل الدروس مفتوحة</span>
+          <button id="adminLogoutBtn" class="admin-logout" type="button" aria-label="إنهاء وضع المشرف">
+            <i class="fa-solid fa-right-from-bracket"></i> خروج
+          </button>
+        </div>
+
+        {/* ===== نافذة تسجيل دخول المشرف (مخفية) ===== */}
+        <div class="admin-modal" id="adminModal" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="adminModalTitle">
+          <div class="admin-modal-overlay" id="adminModalOverlay"></div>
+          <div class="admin-modal-box" role="document">
+            <button class="admin-modal-close" id="adminModalClose" type="button" aria-label="إغلاق">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="admin-modal-icon">
+              <i class="fa-solid fa-user-shield"></i>
+            </div>
+            <h3 id="adminModalTitle">تسجيل دخول المشرف</h3>
+            <p class="admin-modal-sub">
+              الدخول مخصّص للمشرفين لفتح جميع الدروس وتجاوز القيود.
+            </p>
+            <form id="adminForm" autocomplete="off">
+              <label class="admin-field">
+                <span>اسم المستخدم</span>
+                <input type="text" id="adminUser" name="adminUser" autocomplete="off" spellcheck={false} />
+              </label>
+              <label class="admin-field">
+                <span>كلمة السر</span>
+                <input type="password" id="adminPass" name="adminPass" autocomplete="new-password" />
+              </label>
+              <div class="admin-error" id="adminError" style="display:none;">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                اسم المستخدم أو كلمة السر غير صحيحة.
+              </div>
+              <button type="submit" class="btn btn-blue" style="width:100%;justify-content:center;margin-top:6px;">
+                <i class="fa-solid fa-unlock"></i> دخول وفتح الدروس
+              </button>
+            </form>
+          </div>
+        </div>
 
         <script src="/static/app.js"></script>
       </body>
