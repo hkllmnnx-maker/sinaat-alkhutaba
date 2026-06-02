@@ -62,14 +62,29 @@ curl http://localhost:3000
 ```
 
 ## الروابط
-- **الموقع المنشور (الإنتاج)**: https://sinaat-alkhutaba.pages.dev
-- **آخر نشر**: https://4b8ba379.sinaat-alkhutaba.pages.dev
+- **الموقع المنشور (الإنتاج — Cloudflare)**: https://sinaat-alkhutaba.pages.dev
+- **آخر نشر (Cloudflare)**: https://1e0e976a.sinaat-alkhutaba.pages.dev
+- **🌍 الرابط البديل (GitHub Pages — يعمل في اليمن والدول المحجوبة)**: https://hkllmnnx-maker.github.io/sinaat-alkhutaba/
 - **مستودع GitHub**: https://github.com/hkllmnnx-maker/sinaat-alkhutaba
 
+## حلّ مشكلة الحجب في بعض الدول (اليمن وغيرها)
+نطاق Cloudflare Pages (`*.pages.dev`) قد يكون محجوبًا على مستوى مزوّدي الإنترنت في بعض الدول مثل اليمن — وهذا حجب خارجي لا يمكن التحكّم به من داخل الكود. **الحلّ الدائم**: نسخة ثابتة مطابقة للموقع منشورة على **GitHub Pages** (نطاق `github.io` غير محجوب عادةً):
+
+👉 **https://hkllmnnx-maker.github.io/sinaat-alkhutaba/**
+
+- النسخة الثابتة تُولَّد عبر `npm run build:static` (سكربت `scripts/build-static.cjs`) إلى مجلّد `docs/`، ثم تُنشَر تلقائيًا عبر GitHub Pages من فرع `main` ومسار `/docs`.
+- يدعم `app.js` المسار الفرعي `/sinaat-alkhutaba/` تلقائيًا (كشف `BASE_PATH` من مسار سكربت `app.js`)، فتعمل كل الروابط والتنقّل والقفل دون مشاكل.
+- لتحديث النسخة البديلة بعد أي تعديل: شغّل الخادم محليًا ثم `npm run build:static` ثم ارفع `docs/` إلى GitHub.
+
 ## حالة النشر
-- **المنصّة**: Cloudflare Pages.
-- **الحالة**: ✅ منشور ويعمل (Active).
+- **المنصّة الأساسية**: Cloudflare Pages — https://sinaat-alkhutaba.pages.dev
+- **المنصّة البديلة (لتجاوز الحجب)**: GitHub Pages — https://hkllmnnx-maker.github.io/sinaat-alkhutaba/
+- **الحالة**: ✅ منشور ويعمل على المنصّتين (Active).
 - **آخر تحديث**: 2026-06-02.
+
+## آخر الإصلاحات
+- **إصلاح اختفاء نافذة المشرف**: كانت النقرة المفردة على شعار الموقع (رابط `<a href="/">`) تُحدِث انتقالًا/إعادة تحميل للصفحة فتختفي النافذة عند اكتمال التحميل. الحلّ: منع السلوك الافتراضي للرابط دائمًا (`preventDefault`) واستخدام مؤقّت 280ملّي ثانية للتمييز بين النقرة المفردة (انتقال) والمزدوجة (فتح النافذة دون انتقال) — فأصبحت النافذة **تبقى ولا تختفي**.
+- **إصلاح الحجب**: إضافة نسخة GitHub Pages البديلة (انظر القسم أعلاه).
 
 ## ما لم يُنجز بعد / خطوات مقترحة
 - (اختياري مستقبلًا) إضافة قسم «نماذج خطب» جاهزة، ومكتبة صوتية، ولوحة شهادة إتمام، وربط دومين مخصّص.
