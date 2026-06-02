@@ -74,6 +74,11 @@ export const modules: Module[] = [
         title: 'ما هي الخطابة؟ تعريفها وأهميتها',
         summary:
           'مفهوم الخطابة لغةً واصطلاحاً، ومكانتها في الإسلام، ولماذا هي مهارة لا غنى عنها للداعية والقائد.',
+        diagrams: [
+          { src: '/static/diagrams/m1l1.png', title: 'نظرة شاملة على الدرس', caption: 'الخريطة الكاملة لمفهوم الخطابة وأهميتها.' },
+          { src: '/static/diagrams/m1l1-b.png', title: 'تعريف الخطابة لغةً واصطلاحاً', caption: 'الفرق بين المعنى اللغوي والاصطلاحي للخطابة.' },
+          { src: '/static/diagrams/m1l1-c.png', title: 'مكانة الخطابة في الإسلام', caption: 'لماذا نتعلّم الخطابة وما منزلتها الدعوية.' },
+        ],
         sections: [
           {
             heading: 'تعريف الخطابة',
@@ -149,6 +154,11 @@ export const modules: Module[] = [
         title: 'أركان الخطابة الثلاثة',
         summary:
           'الخطيب، والخطبة (الرسالة)، والمستمعون (الجمهور) — وكيف يتكامل هذا الثلاثي لصناعة الأثر.',
+        diagrams: [
+          { src: '/static/diagrams/m1l2.png', title: 'نظرة شاملة على الدرس', caption: 'أركان العملية الخطابية الثلاثة.' },
+          { src: '/static/diagrams/m1l2-b.png', title: 'الركن الأول: الخطيب ومقوّماته', caption: 'الصفات التي تصنع الخطيب المؤثّر.' },
+          { src: '/static/diagrams/m1l2-c.png', title: 'الخطبة والجمهور: ركنان متكاملان', caption: 'العلاقة بين الرسالة والمتلقّي.' },
+        ],
         sections: [
           {
             heading: 'الركن الأول: الخطيب',
@@ -200,6 +210,11 @@ export const modules: Module[] = [
         title: 'صفات الخطيب المؤثّر',
         summary:
           'الصفات العلمية والخُلقية والأدائية التي تصنع الخطيب الناجح القادر على التأثير.',
+        diagrams: [
+          { src: '/static/diagrams/m1l3.png', title: 'نظرة شاملة على الدرس', caption: 'صفات الخطيب الناجح مجتمعة.' },
+          { src: '/static/diagrams/m1l3-b.png', title: 'الصفات العلمية والخُلُقية', caption: 'ما يحتاجه الخطيب من علمٍ وخُلُق.' },
+          { src: '/static/diagrams/m1l3-c.png', title: 'الصفات الأدائية', caption: 'مهارات الإلقاء والحضور.' },
+        ],
         sections: [
           {
             heading: 'الصفات العلمية',
@@ -263,6 +278,11 @@ export const modules: Module[] = [
         title: 'اختيار الموضوع وجمع المادة',
         summary:
           'كيف تختار موضوعاً مناسباً ومؤثّراً، وكيف تجمع مادةً علمية رصينة من مصادرها الموثوقة.',
+        diagrams: [
+          { src: '/static/diagrams/m2l1.png', title: 'نظرة شاملة على الدرس', caption: 'خطوات اختيار الموضوع وجمع المادة.' },
+          { src: '/static/diagrams/m2l1-b.png', title: 'معايير اختيار الموضوع الخطابي', caption: 'كيف تختار موضوعاً مناسباً ومؤثّراً.' },
+          { src: '/static/diagrams/m2l1-c.png', title: 'مصادر جمع المادة وتنقيحها', caption: 'من أين تجمع مادتك وكيف تغربلها.' },
+        ],
         sections: [
           {
             heading: 'معايير اختيار الموضوع',
@@ -323,6 +343,11 @@ export const modules: Module[] = [
         title: 'هيكلة الخطبة: المقدمة والعرض والخاتمة',
         summary:
           'البناء الهندسي للخطبة الناجحة: كيف تفتتح بقوة، وتعرض بترتيب، وتختم بأثر باقٍ.',
+        diagrams: [
+          { src: '/static/diagrams/m2l2.png', title: 'نظرة شاملة على الدرس', caption: 'بناء الخطبة من المقدمة إلى الخاتمة.' },
+          { src: '/static/diagrams/m2l2-b.png', title: 'المقدمة الجاذبة: بوابة الخطبة', caption: 'كيف تفتتح خطبتك بقوّة.' },
+          { src: '/static/diagrams/m2l2-c.png', title: 'العرض والخاتمة: جسد الخطبة وأثرها', caption: 'تنظيم صلب الموضوع وحسن الختام.' },
+        ],
         sections: [
           {
             heading: 'المقدمة الجاذبة',
@@ -395,6 +420,11 @@ export const modules: Module[] = [
         title: 'كتابة النص الخطابي وصياغته',
         summary:
           'فنّ صياغة الكلمات: الوضوح، والإيجاز، وقوة العبارة، والأساليب البلاغية التي ترفع أثر الخطبة.',
+        diagrams: [
+          { src: '/static/diagrams/m2l3.png', title: 'نظرة شاملة على الدرس', caption: 'خصائص الأسلوب والأساليب البلاغية.' },
+          { src: '/static/diagrams/m2l3-b.png', title: 'خصائص الأسلوب الخطابي', caption: 'الوضوح والإيجاز والقوة والتنويع.' },
+          { src: '/static/diagrams/m2l3-c.png', title: 'أساليب بلاغية تقوّي الخطبة', caption: 'أدوات بلاغية ترفع أثر الكلام.' },
+        ],
         sections: [
           {
             heading: 'خصائص الأسلوب الخطابي',
@@ -462,6 +492,11 @@ export const modules: Module[] = [
         title: 'الصوت: قوّته ونبراته وتنويعه',
         summary:
           'كيف تستخدم صوتك أداةً للتأثير عبر التحكّم في الطبقة والسرعة والوقفات والتنويع.',
+        diagrams: [
+          { src: '/static/diagrams/m3l1.png', title: 'نظرة شاملة على الدرس', caption: 'التحكّم في الصوت أداةً للتأثير.' },
+          { src: '/static/diagrams/m3l1-b.png', title: 'عناصر الصوت الخطابي', caption: 'الجهارة والطبقة والسرعة والوقفات.' },
+          { src: '/static/diagrams/m3l1-c.png', title: 'العناية بالصوت وتنويع النبرة', caption: 'كيف تحافظ على صوتك وتنوّع نبرتك.' },
+        ],
         sections: [
           {
             heading: 'عناصر الصوت الخطابي',
@@ -528,6 +563,11 @@ export const modules: Module[] = [
         title: 'لغة الجسد والتواصل البصري',
         summary:
           'الجسد يتكلّم قبل اللسان: الوقفة، الإيماءات، حركة اليدين، وتوزيع النظر على الجمهور.',
+        diagrams: [
+          { src: '/static/diagrams/m3l2.png', title: 'نظرة شاملة على الدرس', caption: 'لغة الجسد والتواصل البصري.' },
+          { src: '/static/diagrams/m3l2-b.png', title: 'الوقفة وحركة اليدين', caption: 'الحضور الجسدي المتّزن المعبّر.' },
+          { src: '/static/diagrams/m3l2-c.png', title: 'التواصل البصري مع الجمهور', caption: 'بناء جسر الثقة بالنظر.' },
+        ],
         sections: [
           {
             heading: 'الوقفة والحضور',
@@ -587,6 +627,11 @@ export const modules: Module[] = [
         title: 'التغلّب على الخوف والرهبة',
         summary:
           'رهبة المنصّة طبيعية، لكنها قابلة للترويض. تعرّف على أسبابها وأساليب التغلّب عليها عملياً.',
+        diagrams: [
+          { src: '/static/diagrams/m3l3.png', title: 'نظرة شاملة على الدرس', caption: 'ترويض رهبة المنصّة.' },
+          { src: '/static/diagrams/m3l3-b.png', title: 'لماذا نخاف من المواجهة؟', caption: 'أسباب الخوف من الإلقاء.' },
+          { src: '/static/diagrams/m3l3-c.png', title: 'أساليب التغلّب على الرهبة', caption: 'خطوات عملية لبناء الثقة.' },
+        ],
         sections: [
           {
             heading: 'لماذا نخاف من المواجهة؟',
@@ -665,6 +710,11 @@ export const modules: Module[] = [
         title: 'أساليب الإقناع والتأثير',
         summary:
           'الإقناع علمٌ وفنّ: المنطق (اللوغوس)، والمصداقية (الإيثوس)، والعاطفة (الباثوس).',
+        diagrams: [
+          { src: '/static/diagrams/m4l1.png', title: 'نظرة شاملة على الدرس', caption: 'علم الإقناع وفنّه.' },
+          { src: '/static/diagrams/m4l1-b.png', title: 'ركائز الإقناع الثلاث', caption: 'المنطق والمصداقية والعاطفة.' },
+          { src: '/static/diagrams/m4l1-c.png', title: 'وسائل تقوية الإقناع', caption: 'أدوات ترفع قوّة الحجّة والتأثير.' },
+        ],
         sections: [
           {
             heading: 'ركائز الإقناع الثلاث',
@@ -710,6 +760,11 @@ export const modules: Module[] = [
         title: 'التعامل مع الجمهور والمواقف الطارئة',
         summary:
           'كيف تتعامل مع تشتّت الجمهور، والمقاطعات، والنسيان، والأعطال التقنية بهدوء واحتراف.',
+        diagrams: [
+          { src: '/static/diagrams/m4l2.png', title: 'نظرة شاملة على الدرس', caption: 'إدارة الجمهور والمواقف الطارئة.' },
+          { src: '/static/diagrams/m4l2-b.png', title: 'التعامل مع المواقف الطارئة', caption: 'النسيان والمقاطعة والأعطال بهدوء.' },
+          { src: '/static/diagrams/m4l2-c.png', title: 'قراءة تفاعل الجمهور', caption: 'كيف تقرأ علامات الملل والتفاعل.' },
+        ],
         sections: [
           {
             heading: 'قراءة تفاعل الجمهور',
@@ -757,6 +812,11 @@ export const modules: Module[] = [
         title: 'صناعة القائد: من خطيب إلى مؤثّر',
         summary:
           'الخطابة وسيلة لصناعة القائد المؤثّر الذي يهدي القلوب ويغيّر الواقع نحو الخير.',
+        diagrams: [
+          { src: '/static/diagrams/m4l3.png', title: 'نظرة شاملة على الدرس', caption: 'من خطيب إلى مؤثّر وقائد.' },
+          { src: '/static/diagrams/m4l3-b.png', title: 'صفات القائد المؤثّر', caption: 'الرؤية والقدوة والاهتمام والصبر.' },
+          { src: '/static/diagrams/m4l3-c.png', title: 'الخطابة في خدمة المجتمع', caption: 'توظيف الخطابة لإصلاح الواقع.' },
+        ],
         sections: [
           {
             heading: 'من التأثير اللحظي إلى الأثر الباقي',

@@ -465,44 +465,92 @@ img { max-width: 100%; display: block; }
   color: var(--muted); font-size: 1.05rem; margin-bottom: 26px;
   padding-bottom: 22px; border-bottom: 2px dashed var(--line);
 }
-/* ===== التشجير المصوّر للدرس ===== */
-.lesson-diagram {
-  margin: 0 0 32px;
-  padding: 18px;
+/* ===== معرض المشجّرات المصوّرة للدرس ===== */
+.lesson-diagrams {
+  margin: 0 0 36px;
+  padding: 22px;
   background: linear-gradient(180deg, #f7fafe, #eef4fb);
   border: 1px solid var(--line);
   border-radius: 18px;
   box-shadow: 0 6px 22px rgba(15, 86, 155, .08);
 }
-.lesson-diagram figcaption {
+.lesson-diagrams .diagrams-title {
   color: var(--blue-800);
   font-weight: 800;
-  font-size: 1.15rem;
-  margin-bottom: 14px;
+  font-size: 1.25rem;
+  margin: 0 0 8px;
   display: flex; align-items: center; gap: 10px;
 }
-.lesson-diagram figcaption i { color: var(--gold-600); }
-.lesson-diagram a { display: block; }
-.lesson-diagram img {
+.lesson-diagrams .diagrams-title i { color: var(--gold-600); }
+.lesson-diagrams .diagrams-intro {
+  color: var(--muted);
+  font-size: .98rem;
+  margin: 0 0 18px;
+  line-height: 1.8;
+}
+.diagrams-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+}
+.diagram-card {
+  margin: 0;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 3px 14px rgba(15, 86, 155, .07);
+  display: flex; flex-direction: column;
+  transition: transform .22s ease, box-shadow .22s ease;
+}
+.diagram-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(15, 86, 155, .18);
+}
+.diagram-card a {
+  display: block;
+  position: relative;
+  line-height: 0;
+  background: #fff;
+}
+.diagram-card img {
   width: 100%;
   height: auto;
   display: block;
-  border-radius: 12px;
-  border: 1px solid var(--line);
   background: #fff;
-  transition: transform .25s ease, box-shadow .25s ease;
 }
-.lesson-diagram a:hover img {
-  transform: scale(1.01);
-  box-shadow: 0 10px 30px rgba(15, 86, 155, .18);
+.diagram-card .diagram-zoom {
+  position: absolute;
+  inset-block-start: 10px;
+  inset-inline-end: 10px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: rgba(15, 86, 155, .88);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .85rem;
+  opacity: 0;
+  transition: opacity .22s ease;
 }
-.lesson-diagram .diagram-hint {
-  text-align: center;
+.diagram-card a:hover .diagram-zoom { opacity: 1; }
+.diagram-card figcaption {
+  padding: 14px 16px;
+  display: flex; flex-direction: column; gap: 5px;
+  border-top: 2px solid #f0f3f8;
+}
+.diagram-card-title {
+  color: var(--blue-800);
+  font-weight: 800;
+  font-size: 1.02rem;
+}
+.diagram-card-caption {
   color: var(--muted);
   font-size: .9rem;
-  margin: 12px 0 0;
+  line-height: 1.7;
 }
-.lesson-diagram .diagram-hint i { color: var(--gold-600); margin-left: 4px; }
+@media (max-width: 640px) {
+  .diagrams-grid { grid-template-columns: 1fr; }
+}
 
 .lesson-section { margin-bottom: 32px; }
 .lesson-section h2 {
