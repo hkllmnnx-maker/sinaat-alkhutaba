@@ -33,6 +33,7 @@
   // ---------- التخزين ----------
   var KEY = 'sk_progress_v1';      // الدروس المكتملة { lessonId: true }
   var START_KEY = 'sk_started_v1'; // أوقات بدء الدروس { lessonId: timestamp }
+  var DUR_KEY = 'sk_duration_v1';  // المدّة المختارة لكل درس (بالدقائق) { lessonId: minutes }
   function getJSON(k) {
     try { return JSON.parse(localStorage.getItem(k) || '{}'); }
     catch (e) { return {}; }
@@ -44,6 +45,8 @@
   function saveProgress(p) { setJSON(KEY, p); }
   function getStarts() { return getJSON(START_KEY); }
   function saveStarts(s) { setJSON(START_KEY, s); }
+  function getDurations() { return getJSON(DUR_KEY); }
+  function saveDurations(d) { setJSON(DUR_KEY, d); }
 
   // ---------- ترتيب الدروس ونظام الفتح ----------
   var lessonOrder = [];
@@ -111,8 +114,10 @@
     return !!p[prevId];                 // يُفتح فقط إذا أُكمل السابق
   }
 
-  var MIN_MINUTES = 5;
-  var MIN_MS = MIN_MINUTES * 60 * 1000;
+  // المدّة الافتراضية إن لم يختر المستخدم (تُستخدم كحدّ احتياطي فقط)
+  var DEFAULT_MINUTES = 5;
+  var MIN_ALLOWED = 1;
+  var MAX_ALLOWED = 5;
 
   // ---------- قائمة الجوال ----------
   var toggle = document.getElementById('navToggle');
@@ -279,16 +284,46 @@
     var s = getStarts();
     return s[currentLessonId] || 0;
   }
+  // المدّة المختارة لهذا الدرس بالدقائق (إن وُجدت)
+  function getChosenMinutes() {
+    var d = getDurations();
+    var m = parseInt(d[currentLessonId], 10);
+    if (!m || isNaN(m)) return 0;
+    if (m < MIN_ALLOWED) m = MIN_ALLOWED;
+    if (m > MAX_ALLOWED) m = MAX_ALLOWED;
+    return m;
+  }
+  // المدّة المعتمدة للحساب (بالملّي ثانية) — المختارة أو الافتراضية
+  function getRequiredMs() {
+    var m = getChosenMinutes() || DEFAULT_MINUTES;
+    return m * 60 * 1000;
+  }
   function timeConditionMet() {
     var t = getStartTime();
     if (!t) return false;
-    return (Date.now() - t) >= MIN_MS;
+    return (Date.now() - t) >= getRequiredMs();
   }
 
   // ---------- إدارة لوحة البوّابة (Gate) ----------
   var countdownTimer = null;
 
+  // المدّة المختارة مؤقّتًا قبل الضغط على «بدء الدرس»
+  var pendingMinutes = 0;
+
   function startLesson() {
+    // لا يبدأ الدرس دون اختيار مدّة (إلّا إن سبق بدؤه)
+    var alreadyStarted = !!getStartTime();
+    if (!alreadyStarted) {
+      var chosen = pendingMinutes || getChosenMinutes();
+      if (!chosen) {
+        showToast('اختر مدّة الدراسة أولًا ⏱️');
+        return;
+      }
+      // نثبّت المدّة المختارة لهذا الدرس
+      var d = getDurations();
+      d[currentLessonId] = chosen;
+      saveDurations(d);
+    }
     var s = getStarts();
     if (!s[currentLessonId]) {
       s[currentLessonId] = Date.now();
@@ -299,7 +334,7 @@
 
   function formatRemaining() {
     var t = getStartTime();
-    var remaining = Math.max(0, MIN_MS - (Date.now() - t));
+    var remaining = Math.max(0, getRequiredMs() - (Date.now() - t));
     var totalSec = Math.ceil(remaining / 1000);
     var mm = Math.floor(totalSec / 60);
     var ss = totalSec % 60;
@@ -322,6 +357,8 @@
       if (gsA) gsA.textContent = 'جميع القيود مرفوعة — يمكنك التنقّل بين الدروس بحرّية.';
       if (gTimerA) gTimerA.style.display = 'none';
       if (startBtn) startBtn.style.display = 'none';
+      var gDurA = document.getElementById('gateDuration');
+      if (gDurA) gDurA.style.display = 'none';
       setCond(document.getElementById('condTime'), true);
       setCond(document.getElementById('condQuiz'), true);
       unlockNext();
@@ -338,10 +375,21 @@
     var gateTimer = document.getElementById('gateTimer');
     var condTime = document.getElementById('condTime');
     var condQuiz = document.getElementById('condQuiz');
+    var gateDuration = document.getElementById('gateDuration');
+    var condTimeText = document.getElementById('condTimeText');
 
-    // حالة الأزرار
-    if (started && startBtn) {
-      startBtn.style.display = 'none';
+    // تحديث نصّ شرط الوقت بالمدّة المعتمدة (المختارة سابقًا أو المعلّقة)
+    var effMinutes = getChosenMinutes() || pendingMinutes;
+    if (condTimeText && effMinutes) {
+      condTimeText.textContent = 'مضيُّ ' + toArabicDigits(String(effMinutes)) + ' دقيقة على بدء الدرس';
+    }
+
+    // حالة الأزرار ولوحة اختيار المدّة
+    if (started) {
+      if (startBtn) startBtn.style.display = 'none';
+      if (gateDuration) gateDuration.style.display = 'none';
+    } else {
+      if (gateDuration) gateDuration.style.display = '';
     }
 
     // مؤقّت العدّ التنازلي
@@ -434,6 +482,30 @@
       if (icon) icon.className = 'fa-solid fa-arrow-left';
       if (label) label.textContent = 'الدرس التالي';
     }
+  }
+
+  // ---------- اختيار مدّة الدراسة ----------
+  var durOpts = document.querySelectorAll('.dur-opt');
+  if (durOpts.length) {
+    durOpts.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var m = parseInt(btn.dataset.minutes, 10);
+        if (!m || isNaN(m)) return;
+        pendingMinutes = m;
+        // تمييز الخيار المحدّد
+        durOpts.forEach(function (b) { b.classList.remove('selected'); });
+        btn.classList.add('selected');
+        // تفعيل زر البدء
+        if (startBtn) {
+          startBtn.disabled = false;
+          var lbl = startBtn.querySelector('.start-label');
+          if (lbl) lbl.textContent = 'بدء الدرس (' + toArabicDigits(String(m)) + ' دقيقة)';
+        }
+        // تحديث نصّ شرط الوقت
+        var ctt = document.getElementById('condTimeText');
+        if (ctt) ctt.textContent = 'مضيُّ ' + toArabicDigits(String(m)) + ' دقيقة على بدء الدرس';
+      });
+    });
   }
 
   if (startBtn) {

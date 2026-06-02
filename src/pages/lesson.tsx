@@ -66,22 +66,35 @@ export const LessonPage: FC<{ lesson: Lesson; module: Module }> = ({
               <div class="gate-head">
                 <i class="fa-solid fa-lock gate-icon" id="gateIcon"></i>
                 <div>
-                  <strong class="gate-title" id="gateTitle">ابدأ الدرس لفتح المحتوى</strong>
+                  <strong class="gate-title" id="gateTitle">اختر مدّة الدراسة لبدء الدرس</strong>
                   <span class="gate-sub" id="gateSub">
-                    اضغط «بدء الدرس» ثمّ امكث خمس دقائق على الأقل، وأجب عن جميع أسئلة الاختبار بشكلٍ صحيح
-                    لتتمكّن من الانتقال إلى الدرس التالي.
+                    اختر المدّة التي ترغب أن يُفتح بعدها قفل الانتقال للدرس التالي (من دقيقة إلى خمس دقائق)،
+                    ثمّ أجب عن جميع أسئلة الاختبار بشكلٍ صحيح. يُفتح الانتقال عند تحقّق الشرطين معًا.
                   </span>
                 </div>
               </div>
 
               <div class="gate-actions">
-                <button id="startLessonBtn" class="btn btn-blue">
-                  <i class="fa-solid fa-play"></i> بدء الدرس
+                {/* خيارات اختيار المدّة الزمنية (تظهر قبل بدء الدرس) */}
+                <div class="gate-duration" id="gateDuration" aria-label="اختيار مدّة الدراسة">
+                  <span class="gate-duration-label">
+                    <i class="fa-regular fa-clock"></i> اختر المدّة:
+                  </span>
+                  <div class="gate-duration-opts" id="gateDurationOpts">
+                    <button type="button" class="dur-opt" data-minutes="1">دقيقة واحدة</button>
+                    <button type="button" class="dur-opt" data-minutes="2">دقيقتان</button>
+                    <button type="button" class="dur-opt" data-minutes="3">٣ دقائق</button>
+                    <button type="button" class="dur-opt" data-minutes="4">٤ دقائق</button>
+                    <button type="button" class="dur-opt" data-minutes="5">٥ دقائق</button>
+                  </div>
+                </div>
+                <button id="startLessonBtn" class="btn btn-blue" disabled>
+                  <i class="fa-solid fa-play"></i> <span class="start-label">بدء الدرس</span>
                 </button>
                 <div class="gate-timer" id="gateTimer" style="display:none;">
                   <i class="fa-regular fa-clock"></i>
                   <span>الوقت المتبقّي لفتح الانتقال: </span>
-                  <strong id="gateCountdown">٠٥:٠٠</strong>
+                  <strong id="gateCountdown">٠٠:٠٠</strong>
                 </div>
               </div>
 
@@ -89,7 +102,7 @@ export const LessonPage: FC<{ lesson: Lesson; module: Module }> = ({
               <ul class="gate-conditions">
                 <li id="condTime" class="cond">
                   <i class="fa-regular fa-circle"></i>
-                  <span>مضيُّ خمس دقائق على بدء الدرس</span>
+                  <span id="condTimeText">مضيُّ المدّة المختارة على بدء الدرس</span>
                 </li>
                 <li id="condQuiz" class="cond">
                   <i class="fa-regular fa-circle"></i>
