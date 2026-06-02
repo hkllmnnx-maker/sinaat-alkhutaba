@@ -9,12 +9,21 @@ export interface Exercise {
   body: string
 }
 
+// عنصر تشجير مصوّر واحد (خريطة ذهنية)
+export interface Diagram {
+  src: string // مسار الصورة
+  title: string // عنوان المشجّر
+  caption?: string // وصف موجز يظهر أسفل الصورة
+}
+
 export interface Lesson {
   id: string
   title: string
   summary: string
-  // مسار صورة التشجير المصوّر (الخريطة الذهنية) للدرس — اختياري
+  // مسار صورة التشجير المصوّر (الخريطة الذهنية) للدرس — اختياري (متوافق مع القديم)
   diagram?: string
+  // مجموعة مشجرات مصوّرة غنية بالتفاصيل لكل درس
+  diagrams?: Diagram[]
   // محتوى الدرس على شكل أقسام (عنوان + فقرات/نقاط)
   sections: {
     heading: string
@@ -62,7 +71,6 @@ export const modules: Module[] = [
     lessons: [
       {
         id: 'm1l1',
-        diagram: '/static/diagrams/m1l1.png',
         title: 'ما هي الخطابة؟ تعريفها وأهميتها',
         summary:
           'مفهوم الخطابة لغةً واصطلاحاً، ومكانتها في الإسلام، ولماذا هي مهارة لا غنى عنها للداعية والقائد.',
@@ -138,7 +146,6 @@ export const modules: Module[] = [
       },
       {
         id: 'm1l2',
-        diagram: '/static/diagrams/m1l2.png',
         title: 'أركان الخطابة الثلاثة',
         summary:
           'الخطيب، والخطبة (الرسالة)، والمستمعون (الجمهور) — وكيف يتكامل هذا الثلاثي لصناعة الأثر.',
@@ -190,7 +197,6 @@ export const modules: Module[] = [
       },
       {
         id: 'm1l3',
-        diagram: '/static/diagrams/m1l3.png',
         title: 'صفات الخطيب المؤثّر',
         summary:
           'الصفات العلمية والخُلقية والأدائية التي تصنع الخطيب الناجح القادر على التأثير.',
@@ -254,7 +260,6 @@ export const modules: Module[] = [
     lessons: [
       {
         id: 'm2l1',
-        diagram: '/static/diagrams/m2l1.png',
         title: 'اختيار الموضوع وجمع المادة',
         summary:
           'كيف تختار موضوعاً مناسباً ومؤثّراً، وكيف تجمع مادةً علمية رصينة من مصادرها الموثوقة.',
@@ -315,7 +320,6 @@ export const modules: Module[] = [
       },
       {
         id: 'm2l2',
-        diagram: '/static/diagrams/m2l2.png',
         title: 'هيكلة الخطبة: المقدمة والعرض والخاتمة',
         summary:
           'البناء الهندسي للخطبة الناجحة: كيف تفتتح بقوة، وتعرض بترتيب، وتختم بأثر باقٍ.',
@@ -388,7 +392,6 @@ export const modules: Module[] = [
       },
       {
         id: 'm2l3',
-        diagram: '/static/diagrams/m2l3.png',
         title: 'كتابة النص الخطابي وصياغته',
         summary:
           'فنّ صياغة الكلمات: الوضوح، والإيجاز، وقوة العبارة، والأساليب البلاغية التي ترفع أثر الخطبة.',
@@ -456,7 +459,6 @@ export const modules: Module[] = [
     lessons: [
       {
         id: 'm3l1',
-        diagram: '/static/diagrams/m3l1.png',
         title: 'الصوت: قوّته ونبراته وتنويعه',
         summary:
           'كيف تستخدم صوتك أداةً للتأثير عبر التحكّم في الطبقة والسرعة والوقفات والتنويع.',
@@ -523,7 +525,6 @@ export const modules: Module[] = [
       },
       {
         id: 'm3l2',
-        diagram: '/static/diagrams/m3l2.png',
         title: 'لغة الجسد والتواصل البصري',
         summary:
           'الجسد يتكلّم قبل اللسان: الوقفة، الإيماءات، حركة اليدين، وتوزيع النظر على الجمهور.',
@@ -583,7 +584,6 @@ export const modules: Module[] = [
       },
       {
         id: 'm3l3',
-        diagram: '/static/diagrams/m3l3.png',
         title: 'التغلّب على الخوف والرهبة',
         summary:
           'رهبة المنصّة طبيعية، لكنها قابلة للترويض. تعرّف على أسبابها وأساليب التغلّب عليها عملياً.',
@@ -662,7 +662,6 @@ export const modules: Module[] = [
     lessons: [
       {
         id: 'm4l1',
-        diagram: '/static/diagrams/m4l1.png',
         title: 'أساليب الإقناع والتأثير',
         summary:
           'الإقناع علمٌ وفنّ: المنطق (اللوغوس)، والمصداقية (الإيثوس)، والعاطفة (الباثوس).',
@@ -708,7 +707,6 @@ export const modules: Module[] = [
       },
       {
         id: 'm4l2',
-        diagram: '/static/diagrams/m4l2.png',
         title: 'التعامل مع الجمهور والمواقف الطارئة',
         summary:
           'كيف تتعامل مع تشتّت الجمهور، والمقاطعات، والنسيان، والأعطال التقنية بهدوء واحتراف.',
@@ -756,7 +754,6 @@ export const modules: Module[] = [
       },
       {
         id: 'm4l3',
-        diagram: '/static/diagrams/m4l3.png',
         title: 'صناعة القائد: من خطيب إلى مؤثّر',
         summary:
           'الخطابة وسيلة لصناعة القائد المؤثّر الذي يهدي القلوب ويغيّر الواقع نحو الخير.',
